@@ -45,9 +45,8 @@ class extract_match_data:
     def get_match_info(self):
         """Extract match information and return as DataFrame"""
         info = self.data['info']
-        # info_df = pd.DataFrame.from_dict(info, orient='index', columns=['value'])
-        # info_df.reset_index(inplace=True)
-        return info
+        df = pd.json_normalize(info, max_level=1)
+        return df
     
     def test_data_structure(self, over):
         """Test the structure of the overs"""
@@ -84,5 +83,6 @@ match = extract_match_data(sample_json)
 # print(x.head())
 
 print(type(match.get_match_info()))
-x = pd.json_normalize(match.get_match_info(), max_level=0)
-print(x)
+x = match.get_match_info()
+print(x.head())
+x.to_csv(f"{DATA_DIR}/test/test_info.csv", index=False)
