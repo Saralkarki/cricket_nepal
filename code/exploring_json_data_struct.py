@@ -45,9 +45,9 @@ class extract_match_data:
     def get_match_info(self):
         """Extract match information and return as DataFrame"""
         info = self.data['info']
-        info_df = pd.DataFrame.from_dict(info, orient='index', columns=['value'])
-        info_df.reset_index(inplace=True)
-        return info_df
+        # info_df = pd.DataFrame.from_dict(info, orient='index', columns=['value'])
+        # info_df.reset_index(inplace=True)
+        return info
     
     def test_data_structure(self, over):
         """Test the structure of the overs"""
@@ -58,12 +58,12 @@ class extract_match_data:
             print(i+1,over_struct)
             print(type(over_struct))
     
-    def convert_json_to_df(self):
+    def convert_json_to_df(self, innings=0):
         """Convert the JSON data to a DataFrame"""
         
 #  flatten the overs and deliveries
         all_deliveries = []
-        inns_overs = self.data['innings'][0]['overs']
+        inns_overs = self.data['innings'][innings]['overs']
         for over in inns_overs:
             all_deliveries.extend(over['deliveries'])
             
@@ -78,51 +78,11 @@ class extract_match_data:
         innings_1_df.drop('wickets', axis=1, inplace=True)
         return innings_1_df
 
-
-
 match = extract_match_data(sample_json)
 
-x = match.convert_json_to_df()
-print(x.head())
+# x = match.convert_json_to_df(1)
+# print(x.head())
 
-
-# Now call the method on the instance
-# match_info = match.test_data_structure(10)
-
-
-
-
-# def convert_to_df():
-#     holder = []
-# # looping through the overs dictionary to extract deliveries
-#     for i in range(len(inns_overs)):
-#         for delivery in range(len(inns_1['overs'][i]['deliveries'])):
-#             # Get the delivery dictionary
-#             delivery_struct = inns_1['overs'][i]['deliveries'][delivery]
-            
-#             # Add over and ball information
-#             delivery_struct['over'] = i + 1  # Cricket overs start from 1
-#             delivery_struct['ball'] = delivery + 1  # Ball number in over
-            
-#             # Append to holder list
-#             holder.append(delivery_struct)
-#             innings_1_df = pd.DataFrame(holder)
-#     return innings_1_df
-
-# def convert_to_df_short():
-#     # Shortest approach to flatten the overs and deliveries
-#     all_deliveries = []
-#     for over in inns_overs:
-#         all_deliveries.extend(over['deliveries'])
-
-#     innings_1_df = pd.json_normalize(all_deliveries, max_level=2)
-
-#     # Shortest approach to flatten wickets column
-#     innings_1_df['wicket_player_out'] = innings_1_df['wickets'].apply(lambda x: x[0]['player_out'] if x else None)
-#     innings_1_df['wicket_kind'] = innings_1_df['wickets'].apply(lambda x: x[0]['kind'] if x else None)
-#     innings_1_df['wicket_fielder'] = innings_1_df['wickets'].apply(lambda x: x[0]['fielders'][0]['name'] if x and 'fielders' in x[0] and x[0]['fielders'] else None)
-
-#     # Drop the original wickets column if you want
-#     innings_1_df.drop('wickets', axis=1, inplace=True)
-
-
+print(type(match.get_match_info()))
+x = pd.json_normalize(match.get_match_info(), max_level=0)
+print(x)
