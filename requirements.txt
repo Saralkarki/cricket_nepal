@@ -1,0 +1,18 @@
+# Core data processing
+pandas>=2.0.0
+numpy>=1.24.0
+
+# Database
+sqlalchemy>=2.0.0
+psycopg2-binary>=2.9.0
+
+# JSON processing (already included with Python)
+# pathlib (already included with Python)
+
+# Optional: for better PostgreSQL support
+# asyncpg>=0.28.0
+
+# Development dependencies (optional)
+# jupyter>=1.0.0
+# matplotlib>=3.7.0
+# seaborn>=0.12.0
